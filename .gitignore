@@ -1,0 +1,13 @@
+bin/
+obj/
+node_modules/
+packages/
+wwwroot/
+dist/
+
+.vs/
+.vscode/
+
+*.suo
+*.user
+*.csproj.user
