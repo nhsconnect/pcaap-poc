@@ -1,12 +1,17 @@
 {
   "name": "client-connector",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/typings/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf ./dist && tsc"
   },
+  "repository": "https://github.com/nhsconnect/pcaap-poc/tree/master/client-connector",
   "author": "",
-  "license": "ISC"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "rimraf": "^2.6.2",
+    "typescript": "^2.8.3"
+  }
 }
