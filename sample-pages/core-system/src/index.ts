@@ -11,6 +11,10 @@ import { ClientConnector, IEvent } from "client-connector";
         listItem.textContent = data;
         list.appendChild(listItem);
     });
+
+    ClientConnector.subscribe("rogue-message", data => {
+        console.log(data);
+    });
 })();
 
 export const sendTest = () => {

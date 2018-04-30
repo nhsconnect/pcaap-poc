@@ -35,12 +35,12 @@ class ClientStateManager {
         const client = this.clients.find(x => x.metadata.sourceUrl === origin);
         client.registered = true;
         client.port = port;
-        return client.id;
+        return client;
     }
 
     getInterestedClients(event: string) {
         return this.clients.filter(client => 
-            client.metadata.eventsOfInterest.filter(x => x.name === event).length > 0
+            client.metadata.eventsOfInterest.filter(x => x === event).length > 0
         );
     }
 
@@ -65,11 +65,13 @@ class Bootstrap {
             const event = message.data as IEvent;
             
             if (event.name === "client-connector:client:loaded") {
-                const clientId = this.clientManager.register(event.data.origin, message.ports[0]);
+                const client = this.clientManager.register(event.data.origin, message.ports[0]);
+                const clientId = client.id;
                 
                 message.ports[0].onmessage = (e: MessageEvent) => {
-                    console.log(e);
-                    dispatcher(clientId, e.data.name, e.data.data, this.clientManager);
+                    if (client.metadata.eventsOfInterest.indexOf(e.data.name) !== -1) {
+                        dispatcher(clientId, e.data.name, e.data.data, this.clientManager);
+                    }
                 };
 
                 return;

@@ -21,4 +21,11 @@ export const sendTest = () => {
     };
 
     ClientConnector.publish(event);
+
+    const rouge: IEvent = {
+        name: "rogue-message",
+        version: "0.0.1",
+        data: "message from SUPPLIER"
+    };
+    ClientConnector.publish(rouge);
 };
