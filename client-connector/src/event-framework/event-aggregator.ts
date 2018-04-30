@@ -2,7 +2,7 @@ import { Logger } from "../utilities/logger";
 const logger = Logger.getLogger("event-aggregator");
 
 interface IHandler {
-    handle: (data: any) => void
+    handle: (data: any) => void;
 }
 
 interface IEventHandlerIndexer {
@@ -44,13 +44,14 @@ export interface IEvent {
     data: any;
 }
 
+// tslint:disable-next-line:variable-name
 export const DomEvents = {
     DOMContentLoaded: "DOMContentLoaded",
     Message: "message"
-}
+};
 
 /**
-* Represents a disposable subsciption to an EventAggregator event.
+* Represents a disposable subscription to an EventAggregator event.
 */
 export interface ISubscription {
     /**
@@ -82,11 +83,11 @@ export class EventAggregator {
         }
 
         typeof event === "string"
-            ? this.handleEventSubsciptions(event, data)
+            ? this.handleEventSubscriptions(event, data)
             : this.handleChannelSubscriptions();
     }
 
-    private handleEventSubsciptions(event: string, data: any) {
+    private handleEventSubscriptions(event: string, data: any) {
         let subscribers = this.eventHandlerLookup[event];
         if (subscribers) {
             subscribers = subscribers.slice();
@@ -125,10 +126,10 @@ export class EventAggregator {
         let subscribers: IHandler[];
 
         if (!event) {
-            throw new Error('Event channel/type was invalid.');
+            throw new Error("Event channel/type was invalid.");
         }
 
-        if (typeof event === 'string') {
+        if (typeof event === "string") {
             handler = new EventHandler(callback);
             subscribers = this.eventHandlerLookup[event] || (this.eventHandlerLookup[event] = []);
         } else {
@@ -140,7 +141,7 @@ export class EventAggregator {
 
         return {
             dispose() {
-                let idx = subscribers.indexOf(handler);
+                const idx = subscribers.indexOf(handler);
                 if (idx !== -1) {
                     subscribers.splice(idx, 1);
                 }
@@ -154,7 +155,7 @@ export class EventAggregator {
     * @param callback The callback to be invoked when when the specified message is published.
     */
     subscribeOnce(event: string | Function, callback: (data: any) => void): ISubscription {
-        let sub = this.subscribe(event, (d: any) => {
+        const sub = this.subscribe(event, (d: any) => {
             sub.dispose();
             return callback(d);
         });
@@ -168,19 +169,19 @@ export class EventAggregator {
 * @param obj The object to mix Event Aggregator functionality into.
 */
 export function includeEventsIn(obj: object): EventAggregator {
-    let ea = new EventAggregator();
+    const ea = new EventAggregator();
 
     const eaObject = obj as IEAObject;
 
-    eaObject.subscribeOnce = function (event, callback) {
+    eaObject.subscribeOnce = (event, callback) => {
         return ea.subscribeOnce(event, callback);
     };
 
-    eaObject.subscribe = function (event, callback) {
+    eaObject.subscribe = (event, callback) => {
         return ea.subscribe(event, callback);
     };
 
-    eaObject.publish = function (event, data) {
+    eaObject.publish = (event, data) => {
         ea.publish(event, data);
     };
 

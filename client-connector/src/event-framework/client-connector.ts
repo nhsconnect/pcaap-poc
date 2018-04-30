@@ -1,7 +1,11 @@
 import { EventAggregator, ISubscription, IEvent, DomEvents } from "./event-aggregator";
 
 export namespace ClientConnector {
-
+    /**
+     * Initialises the client connector.
+     * @param origin The base URL for the client application.
+     * @param host The base URL for the host application.
+     */
     export function init(origin: string, host: string): void {
         if (client) {
             throw new Error("Cannot initialise a new instance of the client connector as one already exists.");
@@ -14,12 +18,21 @@ export namespace ClientConnector {
         client = new Connector(origin, host, ea);
     }
 
+    /**
+     * Publishes an event.
+     * @param event Event object.
+     */
     export function publish(event: IEvent): void {
         client.publish(event);
     }
 
-    export function subscribe(event: string, callback: (data: any) => void): ISubscription {
-        return ea.subscribe(event, callback);
+    /**
+     * Subscribe to an event.
+     * @param eventName Name of the event you want to subscribe to.
+     * @param callback Callback for when the event is raised.
+     */
+    export function subscribe(eventName: string, callback: (data: any) => void): ISubscription {
+        return ea.subscribe(eventName, callback);
     }
 
     let client: Connector;
@@ -42,7 +55,7 @@ export namespace ClientConnector {
 
         publish(event: IEvent): void {
             if(!this.channel){
-                throw new Error("Unable to publish message. There is no open channel.")
+                throw new Error("Unable to publish message. There is no open channel.");
             }
 
             // port 2 is sent to the parent, so we (the client) send messages on port 1
