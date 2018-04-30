@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Wrapper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
     <style>
         html,
         body {
@@ -18,10 +19,23 @@
         body {
             margin: 0;
             padding: 1em;
+            display: flex;
+        }
+
+        #the-sidebar {
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+            height: 100%;
+        }
+
+        #the-sidebar > .button {
+            margin-bottom: 0.5em;
         }
 
         #the-dreamweaver {
             display: flex;
+            flex: 1;
             flex-direction: row;
             max-height: 100%;
             height: 100%;
@@ -31,9 +45,14 @@
             display: flex;
             flex: 1;
         }
+
+        .dw-hide {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
+    <div id="the-sidebar"></div>
     <div id="the-dreamweaver"></div>
 </body>
 </html>

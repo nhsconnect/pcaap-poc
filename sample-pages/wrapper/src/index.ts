@@ -97,23 +97,63 @@ class Bootstrap {
 
     private createClientRenderer() {
         window.addEventListener("DOMContentLoaded", () => {
-            const el = document.querySelector("#the-dreamweaver");
+            const frames = document.querySelector("#the-dreamweaver");
+            const sidebar = document.querySelector("#the-sidebar");
 
-            if (!el) {
+            if (!frames) {
                 console.error("no dreamweaver");
                 return;
             }
 
             const clients = this.clientManager.get().map(x => x.metadata);
 
-            clients.map(x => {
+            clients.map((x, index: number) => {
                 const frame = document.createElement("iframe");
+                if (index > 0) {
+                    frame.classList.add("dw-hide");
+                }
+
+                frame.classList.add("frames");
                 frame.setAttribute("id", `dw-client-${x.id}`); // assign an id
                 frame.setAttribute("frameborder", "0");
                 frame.setAttribute("src", x.sourceUrl);
-                el.appendChild(frame);
+                frames.appendChild(frame);
+
+                const icon = document.createElement("button");
+                icon.classList.add("sidebar-icons", "button", "is-success", "is-rounded");
+                if (index === 0) {
+                    icon.classList.add("is-active");
+                }
+                icon.setAttribute("data-target", x.id);
+                icon.innerText = x.applicationName;
+
+                icon.addEventListener("click", this.selectModule);
+
+                sidebar.appendChild(icon);
             });
         }, false);
+    }
+
+    private selectModule(event: MouseEvent) {
+        event.preventDefault();
+
+        const target: HTMLElement = <HTMLElement>(event.target);
+        const targetId = target.dataset["target"];
+
+        const frames = Array.prototype.slice.call(document.querySelectorAll(".frames"));
+        const icons = Array.prototype.slice.call(document.querySelectorAll(".sidebar-icons"));
+
+        frames.forEach((el: HTMLElement) => {
+            el.classList.add("dw-hide");
+        });
+
+        icons.forEach((el: HTMLElement) => {
+            el.classList.remove("is-active");
+        });
+
+        const visibleFrame = document.getElementById(`dw-client-${targetId}`);
+        visibleFrame.classList.remove("dw-hide");
+        target.classList.add("is-active");
     }
 
     private async fetchClients() {
