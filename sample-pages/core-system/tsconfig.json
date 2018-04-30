@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "module": "esnext",
+        "target": "es6",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "outDir": "./dist",
+        "sourceMap": true,
+        "lib": [
+          "es2015",
+          "dom"
+        ]
+    },
+    "include": [
+        "./src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
