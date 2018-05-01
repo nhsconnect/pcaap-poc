@@ -1,6 +1,6 @@
 import { EventAggregator, ISubscription, IEvent, DomEvents } from "./event-aggregator";
 
-export namespace ClientConnector {
+export namespace DwClientConnector {
     /**
      * Initialises the client connector.
      * @param origin The base URL for the client application.
@@ -33,6 +33,15 @@ export namespace ClientConnector {
      */
     export function subscribe(eventName: string, callback: (data: any) => void): ISubscription {
         return ea.subscribe(eventName, callback);
+    }
+
+    /**
+     * Subscribe to an event once.
+     * @param eventName Name of the event you want to subscribe to.
+     * @param callback Callback for when the event is raised.
+     */
+    export function subscribeOnce(eventName: string, callback: (data: any) => void): ISubscription {
+        return ea.subscribeOnce(eventName, callback);
     }
 
     let client: Connector;

@@ -1,6 +1,6 @@
 {
   "name": "dw-client-connector",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Client connector to be used by modules.",
   "main": "dist/index.js",
   "typings": "dist/typings/index.d.ts",
