@@ -1,4 +1,4 @@
-import { ClientConnector, IEvent } from "client-connector";
+import { ClientConnector, IEvent } from "dw-client-connector";
 
 // tslint:disable-next-line:only-arrow-functions
 (function () {

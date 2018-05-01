@@ -109,31 +109,43 @@ class Bootstrap {
 
             const clients = this.clientManager.get().map(x => x.metadata);
 
-            clients.map((x, index: number) => {
-                const frame = document.createElement("iframe");
-                if (index > 0) {
-                    frame.classList.add("dw-hide");
-                }
-
-                frame.classList.add("frames");
-                frame.setAttribute("id", `dw-client-${x.id}`); // assign an id
-                frame.setAttribute("frameborder", "0");
-                frame.setAttribute("src", x.sourceUrl);
-                frames.appendChild(frame);
-
-                const icon = document.createElement("button");
-                icon.classList.add("sidebar-icons", "button", "is-success", "is-rounded");
-                if (index === 0) {
-                    icon.classList.add("is-active");
-                }
-                icon.setAttribute("data-target", x.id);
-                icon.innerText = x.applicationName;
+            clients.forEach((x, index: number) => {
+                const frame = this.createClientFrame(index, x.id, x.sourceUrl);
+                const icon = this.createClientIcon(index, x.id, x.applicationName);
 
                 icon.addEventListener("click", this.selectModule);
 
+                frames.appendChild(frame);
                 sidebar.appendChild(icon);
             });
         }, false);
+    }
+
+    private createClientFrame(index: number, clientId: string, sourceUrl: string): HTMLIFrameElement {
+        const frame = document.createElement("iframe");
+        frame.setAttribute("id", `dw-client-${clientId}`);
+        frame.setAttribute("frameborder", "0");
+        frame.setAttribute("src", sourceUrl);
+        frame.classList.add("frames");
+        
+        if (index > 0) {
+            frame.classList.add("dw-hide");
+        }
+
+        return frame;
+    }
+
+    private createClientIcon(index: number, clientId: string, applicationName: string): HTMLAnchorElement {
+        const icon = document.createElement("a");
+        icon.setAttribute("data-target", `dw-client-${clientId}`);
+        icon.innerText = applicationName;
+        icon.classList.add("sidebar-icons", "button", "is-rounded");
+
+        if (index === 0) {
+            icon.classList.add("is-info", "is-active");
+        }
+
+        return icon;
     }
 
     private selectModule(event: MouseEvent) {
@@ -150,12 +162,12 @@ class Bootstrap {
         });
 
         icons.forEach((el: HTMLElement) => {
-            el.classList.remove("is-active");
+            el.classList.remove("is-active", "is-info");
         });
 
-        const visibleFrame = document.getElementById(`dw-client-${targetId}`);
+        const visibleFrame = document.getElementById(targetId);
         visibleFrame.classList.remove("dw-hide");
-        target.classList.add("is-active");
+        target.classList.add("is-active", "is-info");
     }
 
     private async fetchClients() {
